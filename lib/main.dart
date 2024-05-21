@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather/core/theme/theme.dart';
-import 'package:weather/features/manage_cities/presentation/pages/manage_city.dart';
 import 'package:weather/features/weather_info/presentation/pages/home.dart';
 
 void main() {
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: const ManageCity(),
+      home: const MyHomePage(),
     );
   }
 }

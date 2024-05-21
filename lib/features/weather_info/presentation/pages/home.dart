@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/core/theme/app_pallete.dart';
+import 'package:weather/features/manage_cities/presentation/pages/manage_city.dart';
 import 'package:weather/features/weather_info/presentation/widgets/widgets.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -19,7 +20,11 @@ class MyHomePage extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.location_city)),
+          IconButton(onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+              return const ManageCity();
+            }));
+          }, icon: const Icon(Icons.location_city)),
         ],
       ),
       body: SingleChildScrollView(
