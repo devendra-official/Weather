@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather/features/weather_info/utils/widgets.dart';
+import 'package:weather/core/theme/app_pallete.dart';
+import 'package:weather/features/weather_info/presentation/widgets/widgets.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -9,7 +10,9 @@ class MyHomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: AppPallete.appThemeColor,
       appBar: AppBar(
+        backgroundColor: AppPallete.appThemeColor,
         centerTitle: true,
         title: Text(
           "Hiriyur",
