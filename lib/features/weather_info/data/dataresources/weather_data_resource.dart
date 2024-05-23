@@ -16,11 +16,12 @@ class WeatherDataResourceImpl implements WeatherDataResource {
   @override
   Future<WeatherModel> getWeatherData() async {
     try {
-      String city = "hiriyur";
+      String city = "hgdahg";
       String openweather = Private().openweather;
 
       Response response = await client.get(Uri.parse(
           "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
+      // Response response = await client.get(Uri.parse("http://localhost:8080"));
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         return WeatherModel.fromJson(data);
@@ -28,7 +29,11 @@ class WeatherDataResourceImpl implements WeatherDataResource {
         throw ServerException(data["message"]);
       }
     } catch (e) {
-      throw ServerException(e.toString());
+      if (e is ServerException) {
+        throw ServerException(e.message);
+      } else {
+        throw ServerException("something went wrong!");
+      }
     }
   }
 }
