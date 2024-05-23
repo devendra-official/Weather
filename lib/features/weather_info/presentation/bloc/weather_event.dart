@@ -4,6 +4,9 @@ part of 'weather_bloc.dart';
 sealed class WeatherEvent {}
 
 final class WeatherGetData extends WeatherEvent {
+  final String? city;
+
+  WeatherGetData({this.city});
   Map<String, dynamic> weatherConvert(WeatherModel weatherModel) {
     // Getting temperature in celcius and converting to String
     String temp = temperature(weatherModel.list[0].main.temp);
@@ -96,7 +99,7 @@ final class WeatherGetData extends WeatherEvent {
       return "South West";
     } else if (degree >= 248 && degree <= 292) {
       return "West";
-    } else if(degree >= 293 && degree <= 337) {
+    } else if (degree >= 293 && degree <= 337) {
       return "North West";
     }
   }

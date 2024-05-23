@@ -6,7 +6,7 @@ import 'package:weather/core/secrets/private.dart';
 import 'package:weather/features/weather_info/data/models/weather_model.dart';
 
 abstract interface class WeatherDataResource {
-  Future<WeatherModel> getWeatherData();
+  Future<WeatherModel> getWeatherData(String? city);
 }
 
 class WeatherDataResourceImpl implements WeatherDataResource {
@@ -14,11 +14,10 @@ class WeatherDataResourceImpl implements WeatherDataResource {
   WeatherDataResourceImpl(this.client);
 
   @override
-  Future<WeatherModel> getWeatherData() async {
+  Future<WeatherModel> getWeatherData(String? city) async {
     try {
-      String city = "hgdahg";
       String openweather = Private().openweather;
-
+      city = city ?? "Hiriyur";
       Response response = await client.get(Uri.parse(
           "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
       // Response response = await client.get(Uri.parse("http://localhost:8080"));

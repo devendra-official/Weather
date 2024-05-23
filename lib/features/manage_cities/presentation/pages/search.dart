@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/features/manage_cities/presentation/widgets/widgets.dart';
+import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
+import 'package:weather/features/weather_info/presentation/pages/home.dart';
 
 class SearchCity extends StatefulWidget {
   const SearchCity({super.key});
@@ -23,11 +26,20 @@ class _SearchCityState extends State<SearchCity> {
       padding: const EdgeInsets.all(18),
       child: Column(
         children: [
-          Text("Add city",style: Theme.of(context).textTheme.titleLarge,),
+          Text(
+            "Add city",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 10),
           TextField(
             controller: search,
-            onSubmitted: (value) {},
+            onSubmitted: (value) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                BlocProvider.of<WeatherBloc>(context)
+                    .add(WeatherGetData(city: value.trim()));
+                return const MyHomePage();
+              }));
+            },
             onChanged: (value) {},
             decoration: InputDecoration(
               hintText: "Search City",

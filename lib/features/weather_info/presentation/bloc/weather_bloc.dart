@@ -15,7 +15,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
   Future<void> _getData(WeatherGetData event, Emitter<WeatherState> emit) async {
     emit(WeatherLoading());
-    final result = await weatherUsecase(WeatherParams());
+    final result = await weatherUsecase(WeatherParams(city: event.city));
     result.fold((model) {
       Map<String, dynamic> obj = event.weatherConvert(model);
       emit(WeatherSuccess(

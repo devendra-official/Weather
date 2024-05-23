@@ -11,8 +11,12 @@ class WeatherUsecase implements UseCase<WeatherModel, WeatherParams> {
 
   @override
   Future<Either<WeatherModel, Failure>> call(WeatherParams params) {
-    return weatherDomainRepository.getWeatherData();
+    return weatherDomainRepository.getWeatherData(params.city);
   }
 }
 
-class WeatherParams {}
+class WeatherParams {
+  final String? city;
+
+  WeatherParams({this.city});
+}
