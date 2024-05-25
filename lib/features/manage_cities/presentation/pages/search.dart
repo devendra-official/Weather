@@ -34,11 +34,14 @@ class _SearchCityState extends State<SearchCity> {
           TextField(
             controller: search,
             onSubmitted: (value) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) {
                 BlocProvider.of<WeatherBloc>(context)
                     .add(WeatherGetData(city: value.trim()));
                 return const MyHomePage();
-              }));
+              }), (context) {
+                return false;
+              });
             },
             onChanged: (value) {},
             decoration: InputDecoration(

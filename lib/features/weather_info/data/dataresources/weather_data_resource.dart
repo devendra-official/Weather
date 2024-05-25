@@ -18,9 +18,9 @@ class WeatherDataResourceImpl implements WeatherDataResource {
     try {
       String openweather = Private().openweather;
       city = city ?? "Hiriyur";
-      Response response = await client.get(Uri.parse(
-          "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
-      // Response response = await client.get(Uri.parse("http://localhost:8080"));
+      // Response response = await client.get(Uri.parse(
+      //     "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
+      Response response = await client.get(Uri.parse("http://localhost:8080"));
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         return WeatherModel.fromJson(data);

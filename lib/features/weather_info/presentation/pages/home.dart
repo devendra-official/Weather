@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/core/theme/app_pallete.dart';
+import 'package:weather/core/widgets/widgets.dart';
 import 'package:weather/features/manage_cities/presentation/pages/manage_city.dart';
 import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
-import 'package:weather/features/weather_info/presentation/pages/error.dart';
 import 'package:weather/features/weather_info/presentation/widgets/widgets.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    context.read<WeatherBloc>().add(WeatherGetData());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return BlocBuilder<WeatherBloc, WeatherState>(
-      builder: (context, state) {
-        if (state is WeatherLoading) {
-          return const Center(child: CircularProgressIndicator.adaptive());
-        }
-        if (state is WeatherFailure) {
-          return ErrorPage(error: state.message);
-        }
-        if (state is WeatherSuccess) {
-          return Scaffold(
-            backgroundColor: AppPallete.appThemeColor,
-            appBar: AppBar(
-              backgroundColor: AppPallete.appThemeColor,
-              centerTitle: true,
-              title: Text(
-                state.cityName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return const ManageCity();
-                      }));
-                    },
-                    icon: const Icon(Icons.location_city)),
-              ],
-            ),
-            body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: AppPallete.appThemeColor,
+      body: BlocConsumer<WeatherBloc, WeatherState>(
+        listener: (context, state) {
+          if (state is WeatherFailure) {
+            showMessage(context, state.message);
+          }
+        },
+        builder: (context, state) {
+          if (state is WeatherLoading) {
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
+          if (state is WeatherSuccess) {
+            return SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox.shrink(),
+                        Text(
+                          state.cityName,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 54,
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                                return const ManageCity();
+                              }));
+                            },
+                            icon: const Icon(
+                              Icons.location_city,
+                              size: 34,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     ContainerBox(
                       padding: const EdgeInsets.all(16),
                       child: Row(
@@ -69,25 +69,24 @@ class _MyHomePageState extends State<MyHomePage> {
                               Text(
                                 state.main,
                                 style: const TextStyle(
-                                    fontSize: 21, fontWeight: FontWeight.bold),
+                                    fontSize: 28, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 30),
-                              Text("${state.temp}°C",
-                                  style: const TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                "${state.temp}°C",
+                                style: const TextStyle(
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Text(state.dateTime)
                             ],
                           ),
-                          Column(
-                            children: [
-                              Image.asset(
-                                state.weatherImage,
-                                height: height / 6,
-                                width: width / 3,
-                              ),
-                            ],
-                          )
+                          Image.asset(
+                            state.weatherImage,
+                            height: height / 6,
+                            width: width / 3,
+                          ),
                         ],
                       ),
                     ),
@@ -231,12 +230,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-            ),
-          );
-        } else {
+            );
+          }
           return const ManageCity();
-        }
-      },
+        },
+      ),
     );
   }
 }

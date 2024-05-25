@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/core/theme/theme.dart';
 import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
@@ -6,6 +7,10 @@ import 'package:weather/features/weather_info/presentation/pages/home.dart';
 import 'package:weather/init_dependency.dart';
 
 void main() async {
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
   initdependencyfun();
   runApp(BlocProvider(
     create: (context) => serviceLocator<WeatherBloc>(),
@@ -13,9 +18,19 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    BlocProvider.of<WeatherBloc>(context).add(WeatherGetData());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

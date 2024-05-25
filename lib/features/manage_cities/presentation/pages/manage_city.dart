@@ -11,10 +11,11 @@ class ManageCity extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return const SearchCity();
-              });
+            context: context,
+            builder: (context) {
+              return const SearchCity();
+            },
+          );
         },
         child: const Icon(Icons.add),
       ),
