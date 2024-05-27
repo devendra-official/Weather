@@ -7,11 +7,12 @@ import 'package:weather/features/weather_info/presentation/pages/home.dart';
 import 'package:weather/init_dependency.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
-  initdependencyfun();
+  await initdependencyfun();
   runApp(BlocProvider(
     create: (context) => serviceLocator<WeatherBloc>(),
     child: const MyApp(),

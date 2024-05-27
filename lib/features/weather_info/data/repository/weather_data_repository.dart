@@ -10,9 +10,18 @@ class WeatherDataRepositoryImpl implements WeatherDomainRepository {
   WeatherDataRepositoryImpl(this.weatherDataResource);
 
   @override
-  Future<Either<WeatherModel, Failure>> getWeatherData(String? city) async {
+  Future<Either<WeatherModel, Failure>> getWeatherData(String city) async {
     try {
       return left(await weatherDataResource.getWeatherData(city));
+    } on ServerException catch (e) {
+      return right(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> getLocation() async {
+    try {
+      return left(await weatherDataResource.getLocation());
     } on ServerException catch (e) {
       return right(Failure(e.message));
     }

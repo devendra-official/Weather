@@ -5,8 +5,9 @@ sealed class WeatherEvent {}
 
 final class WeatherGetData extends WeatherEvent {
   final String? city;
+  final bool location;
 
-  WeatherGetData({this.city});
+  WeatherGetData({this.city, this.location = false});
   Map<String, dynamic> weatherConvert(WeatherModel weatherModel) {
     // Getting temperature in celcius and converting to String
     String temp = temperature(weatherModel.list[0].main.temp);

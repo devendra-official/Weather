@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
+import 'package:weather/features/weather_info/presentation/pages/home.dart';
 
 class QuickSearch extends StatelessWidget {
   const QuickSearch({super.key});
@@ -37,8 +40,13 @@ class FamousCity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // TODO: write functionality
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          BlocProvider.of<WeatherBloc>(context)
+              .add(WeatherGetData(city: city, location: locate));
+          return const MyHomePage();
+        }));
+      },
       child: Chip(
         side: BorderSide.none,
         backgroundColor: Colors.black12,

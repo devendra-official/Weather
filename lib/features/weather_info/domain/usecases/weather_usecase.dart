@@ -6,7 +6,6 @@ import 'package:weather/features/weather_info/domain/repository/weather_domain_r
 
 class WeatherUsecase implements UseCase<WeatherModel, WeatherParams> {
   final WeatherDomainRepository weatherDomainRepository;
-
   WeatherUsecase(this.weatherDomainRepository);
 
   @override
@@ -15,8 +14,20 @@ class WeatherUsecase implements UseCase<WeatherModel, WeatherParams> {
   }
 }
 
-class WeatherParams {
-  final String? city;
+class GetLocationUseCase implements UseCase<String, GetLocationParams> {
+  final WeatherDomainRepository weatherDomainRepository;
+  GetLocationUseCase(this.weatherDomainRepository);
 
-  WeatherParams({this.city});
+  @override
+  Future<Either<String, Failure>> call(GetLocationParams params) {
+    return weatherDomainRepository.getLocation();
+  }
+}
+
+class GetLocationParams {}
+
+class WeatherParams {
+  final String city;
+
+  WeatherParams({required this.city});
 }
