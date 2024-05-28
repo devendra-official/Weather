@@ -24,16 +24,22 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       WeatherGetData event, Emitter<WeatherState> emit) async {
     emit(WeatherLoading());
     late String? city;
+    late String? error;
     city = preferences.getString("city");
-    if (event.city == null || event.location) {
+    if ((event.city == null && city == null) || event.location) {
       final location = await getLocationUseCase.call(GetLocationParams());
       location.fold((value) {
         city = value;
-      }, (failure) => emit(WeatherFailure(failure.message)));
+      }, (failure) {
+        error = failure.message;
+      });
+      if (error != null) {
+        return emit(WeatherFailure(error!));
+      }
     } else {
-      city = event.city;
+      event.city != null ? city = event.city : city;
     }
-
+    
     final result = await weatherUsecase(WeatherParams(city: city!));
     result.fold((model) {
       Map<String, dynamic> obj = event.weatherConvert(model);

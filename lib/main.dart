@@ -8,10 +8,8 @@ import 'package:weather/init_dependency.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await initdependencyfun();
   runApp(BlocProvider(
     create: (context) => serviceLocator<WeatherBloc>(),
@@ -32,6 +30,7 @@ class _MyAppState extends State<MyApp> {
     BlocProvider.of<WeatherBloc>(context).add(WeatherGetData());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

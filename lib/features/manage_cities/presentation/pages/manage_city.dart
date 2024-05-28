@@ -24,7 +24,7 @@ class ManageCity extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: 0,
+        itemCount: 1,
         itemBuilder: (context, index) {
           TextStyle? style = Theme.of(context).textTheme.titleLarge;
           return Card(

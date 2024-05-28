@@ -41,11 +41,14 @@ class FamousCity extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) {
           BlocProvider.of<WeatherBloc>(context)
               .add(WeatherGetData(city: city, location: locate));
           return const MyHomePage();
-        }));
+        }), (context) {
+          return false;
+        });
       },
       child: Chip(
         side: BorderSide.none,

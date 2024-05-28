@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,14 +12,24 @@ final GetIt serviceLocator = GetIt.instance;
 
 Future<void> initdependencyfun() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  List<ConnectivityResult> connectivityResult =
+      await (Connectivity().checkConnectivity());
   serviceLocator.registerFactory(() => http.Client());
   serviceLocator.registerLazySingleton(() => sharedPreferences);
+  serviceLocator.registerLazySingleton(() => connectivityResult);
   serviceLocator.registerFactory<WeatherDataResource>(
-      () => WeatherDataResourceImpl(serviceLocator(), serviceLocator()));
+    () => WeatherDataResourceImpl(
+      client: serviceLocator(),
+      connectivity: serviceLocator(),
+      preferences: serviceLocator(),
+    ),
+  );
   serviceLocator.registerFactory<WeatherDomainRepository>(
       () => WeatherDataRepositoryImpl(serviceLocator()));
   serviceLocator.registerFactory(() => WeatherUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => GetLocationUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => WeatherBloc(
-      weatherUsecase: serviceLocator(), getLocationUseCase: serviceLocator(),preferences: serviceLocator()));
+      weatherUsecase: serviceLocator(),
+      getLocationUseCase: serviceLocator(),
+      preferences: serviceLocator()));
 }

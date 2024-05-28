@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,13 @@ abstract interface class WeatherDataResource {
 class WeatherDataResourceImpl implements WeatherDataResource {
   final Client client;
   final SharedPreferences preferences;
-  WeatherDataResourceImpl(this.client, this.preferences);
+  final List<ConnectivityResult> connectivity;
+
+  WeatherDataResourceImpl({
+    required this.client,
+    required this.connectivity,
+    required this.preferences,
+  });
 
   Future<Position> determineposition() async {
     try {
@@ -39,10 +46,14 @@ class WeatherDataResourceImpl implements WeatherDataResource {
       throw ServerException(e.toString());
     }
   }
-  
+
   @override
   Future<String> getLocation() async {
     try {
+      bool notConnected = connectivity.contains(ConnectivityResult.none);
+      if (notConnected) {
+        throw ServerException("Please connect to Internet");
+      }
       String geoapi = Private().geoapi;
 
       Position position = await determineposition();
@@ -52,7 +63,8 @@ class WeatherDataResourceImpl implements WeatherDataResource {
       final uri = await client.get(Uri.parse(
           "https://api.geoapify.com/v1/geocode/reverse?lat=$lat&lon=$lon&lang=fr&apiKey=$geoapi"));
       final loc = jsonDecode(uri.body);
-      await preferences.setString("city", loc["features"][0]["properties"]["city"]);
+      await preferences.setString(
+          "city", loc["features"][0]["properties"]["city"]);
       return loc["features"][0]["properties"]["city"];
     } catch (e) {
       if (e is ServerException) {
@@ -65,6 +77,10 @@ class WeatherDataResourceImpl implements WeatherDataResource {
   @override
   Future<WeatherModel> getWeatherData(String city) async {
     try {
+      bool notConnected = connectivity.contains(ConnectivityResult.none);
+      if (notConnected) {
+        throw ServerException("Please connect to Internet");
+      }
       String openweather = Private().openweather;
       Response response = await client.get(Uri.parse(
           "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
