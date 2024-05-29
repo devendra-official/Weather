@@ -9,8 +9,7 @@ import 'package:weather/core/secrets/private.dart';
 import 'package:weather/features/weather_info/data/models/weather_model.dart';
 
 abstract interface class WeatherDataResource {
-  Future<String> getLocation();
-  Future<WeatherModel> getWeatherData(String city);
+  Future<WeatherModel> getWeatherData(String? city, bool locate);
 }
 
 class WeatherDataResourceImpl implements WeatherDataResource {
@@ -47,13 +46,8 @@ class WeatherDataResourceImpl implements WeatherDataResource {
     }
   }
 
-  @override
   Future<String> getLocation() async {
     try {
-      bool notConnected = connectivity.contains(ConnectivityResult.none);
-      if (notConnected) {
-        throw ServerException("Please connect to Internet");
-      }
       String geoapi = Private().geoapi;
 
       Position position = await determineposition();
@@ -75,11 +69,16 @@ class WeatherDataResourceImpl implements WeatherDataResource {
   }
 
   @override
-  Future<WeatherModel> getWeatherData(String city) async {
+  Future<WeatherModel> getWeatherData(String? city, bool locate) async {
     try {
       bool notConnected = connectivity.contains(ConnectivityResult.none);
       if (notConnected) {
-        throw ServerException("Please connect to Internet");
+        throw ServerException("No internet connection");
+      }
+      if ((city == null && preferences.getString("city") == null) || locate) {
+        city = await getLocation();
+      } else {
+        city = preferences.getString("city");
       }
       String openweather = Private().openweather;
       Response response = await client.get(Uri.parse(

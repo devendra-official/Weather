@@ -10,11 +10,9 @@ part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final WeatherUsecase weatherUsecase;
-  final GetLocationUseCase getLocationUseCase;
   final SharedPreferences preferences;
   WeatherBloc({
     required this.weatherUsecase,
-    required this.getLocationUseCase,
     required this.preferences,
   }) : super(WeatherLoading()) {
     on<WeatherGetData>(_getData);
@@ -23,24 +21,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Future<void> _getData(
       WeatherGetData event, Emitter<WeatherState> emit) async {
     emit(WeatherLoading());
-    late String? city;
-    late String? error;
-    city = preferences.getString("city");
-    if ((event.city == null && city == null) || event.location) {
-      final location = await getLocationUseCase.call(GetLocationParams());
-      location.fold((value) {
-        city = value;
-      }, (failure) {
-        error = failure.message;
-      });
-      if (error != null) {
-        return emit(WeatherFailure(error!));
-      }
-    } else {
-      event.city != null ? city = event.city : city;
-    }
-    
-    final result = await weatherUsecase(WeatherParams(city: city!));
+    final result = await weatherUsecase(
+        WeatherParams(city: event.city, locate: event.location));
     result.fold((model) {
       Map<String, dynamic> obj = event.weatherConvert(model);
       emit(WeatherSuccess(
@@ -59,6 +41,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         convertTimeWithWeek: event.convertTimeWithWeek,
         convertTime: event.convertTime,
       ));
-    }, (failure) => emit(WeatherFailure(failure.message)));
+    }, (failure) {
+      return emit(WeatherFailure(failure.message));
+    });
   }
 }

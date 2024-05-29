@@ -10,24 +10,13 @@ class WeatherUsecase implements UseCase<WeatherModel, WeatherParams> {
 
   @override
   Future<Either<WeatherModel, Failure>> call(WeatherParams params) {
-    return weatherDomainRepository.getWeatherData(params.city);
+    return weatherDomainRepository.getWeatherData(params.city,params.locate);
   }
 }
-
-class GetLocationUseCase implements UseCase<String, GetLocationParams> {
-  final WeatherDomainRepository weatherDomainRepository;
-  GetLocationUseCase(this.weatherDomainRepository);
-
-  @override
-  Future<Either<String, Failure>> call(GetLocationParams params) {
-    return weatherDomainRepository.getLocation();
-  }
-}
-
-class GetLocationParams {}
 
 class WeatherParams {
-  final String city;
+  final String? city;
+  final bool locate;
 
-  WeatherParams({required this.city});
+  WeatherParams({required this.city,required this.locate});
 }

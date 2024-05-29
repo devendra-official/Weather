@@ -27,9 +27,6 @@ Future<void> initdependencyfun() async {
   serviceLocator.registerFactory<WeatherDomainRepository>(
       () => WeatherDataRepositoryImpl(serviceLocator()));
   serviceLocator.registerFactory(() => WeatherUsecase(serviceLocator()));
-  serviceLocator.registerFactory(() => GetLocationUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => WeatherBloc(
-      weatherUsecase: serviceLocator(),
-      getLocationUseCase: serviceLocator(),
-      preferences: serviceLocator()));
+      weatherUsecase: serviceLocator(), preferences: serviceLocator()));
 }

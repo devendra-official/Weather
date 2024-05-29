@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:weather/core/theme/app_pallete.dart';
 
 void showMessage(BuildContext context, String message) {
-  print(context);
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.transparent,

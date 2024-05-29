@@ -11,6 +11,7 @@ class ManageCity extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
+            showDragHandle: true,
             context: context,
             builder: (context) {
               return const SearchCity();
@@ -24,7 +25,7 @@ class ManageCity extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(12),
-        itemCount: 1,
+        itemCount: 0,
         itemBuilder: (context, index) {
           TextStyle? style = Theme.of(context).textTheme.titleLarge;
           return Card(
