@@ -43,7 +43,6 @@ class _SearchCityState extends State<SearchCity> {
                 return false;
               });
             },
-            onChanged: (value) {},
             decoration: InputDecoration(
               hintText: "Search City",
               border: OutlineInputBorder(

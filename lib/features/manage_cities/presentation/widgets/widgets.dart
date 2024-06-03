@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/core/theme/app_pallete.dart';
 import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
 import 'package:weather/features/weather_info/presentation/pages/home.dart';
 
@@ -9,8 +10,8 @@ class QuickSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Wrap(
-      runSpacing: 10,
-      spacing: 10,
+      runSpacing: 4,
+      spacing: 8,
       children: [
         FamousCity(city: "Locate", color: Colors.blue, locate: true),
         FamousCity(city: "Bengaluru"),
@@ -28,6 +29,19 @@ class QuickSearch extends StatelessWidget {
     );
   }
 }
+
+Widget cityMessage = SizedBox(
+  width: double.infinity,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Image.asset("assets/images/city.png",
+          height: 64, color: AppPallete.cityIconColor),
+      const SizedBox(height: 18),
+      const Text("No City Added!")
+    ],
+  ),
+);
 
 class FamousCity extends StatelessWidget {
   const FamousCity(

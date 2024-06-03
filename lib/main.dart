@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/core/theme/theme.dart';
+import 'package:weather/features/manage_cities/presentation/cubit/manage_city_cubit.dart';
 import 'package:weather/features/weather_info/presentation/bloc/weather_bloc.dart';
 import 'package:weather/features/weather_info/presentation/pages/home.dart';
 import 'package:weather/init_dependency.dart';
@@ -11,8 +12,11 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await initdependencyfun();
-  runApp(BlocProvider(
-    create: (context) => serviceLocator<WeatherBloc>(),
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (context) => serviceLocator<WeatherBloc>()),
+      BlocProvider(create: (context) => serviceLocator<ManageCityCubit>()),
+    ],
     child: const MyApp(),
   ));
 }

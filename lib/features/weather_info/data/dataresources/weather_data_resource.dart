@@ -48,7 +48,7 @@ class WeatherDataResourceImpl implements WeatherDataResource {
 
   Future<String> getLocation() async {
     try {
-      String geoapi = Private().geoapi;
+      String geoapi = Private.geoapi;
 
       Position position = await determineposition();
       double lat = position.latitude;
@@ -78,9 +78,9 @@ class WeatherDataResourceImpl implements WeatherDataResource {
       if ((city == null && preferences.getString("city") == null) || locate) {
         city = await getLocation();
       } else {
-        city = preferences.getString("city");
+        city ??= city = preferences.getString("city");
       }
-      String openweather = Private().openweather;
+      String openweather = Private.openweather;
       Response response = await client.get(Uri.parse(
           "https://api.openweathermap.org/data/2.5/forecast?q=$city&APPID=$openweather"));
       final data = jsonDecode(response.body);

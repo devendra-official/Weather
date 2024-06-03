@@ -17,3 +17,34 @@ void showMessage(BuildContext context, String message) {
     ),
   );
 }
+
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator.adaptive());
+  }
+}
+
+class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key, required this.error});
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("assets/images/error.png", height: 158),
+          const SizedBox(height: 30),
+          Text(
+            error,
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+    );
+  }
+}
