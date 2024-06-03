@@ -7,6 +7,8 @@ final class ManageCityInitial extends ManageCityState {}
 
 final class ManageCityLoading extends ManageCityState {}
 
+final class ManageCityDeleted extends ManageCityState {}
+
 final class ManageCitySucess extends ManageCityState {
   final List<ManageCityModel> model;
   ManageCitySucess(this.model);

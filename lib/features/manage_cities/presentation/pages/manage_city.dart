@@ -51,31 +51,24 @@ class ManageCity extends StatelessWidget {
                 itemCount: model.length,
                 itemBuilder: (context, index) {
                   TextStyle? style = Theme.of(context).textTheme.titleLarge;
-                  return Dismissible(
-                    onDismissed: (direction) {
-                      BlocProvider.of<ManageCityCubit>(context)
-                          .deleteCity(context, model[index].city);
-                    },
-                    key: Key(index.toString()),
-                    child: Card(
-                      color: AppPallete.cardColor,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            BlocProvider.of<WeatherBloc>(context)
-                                .add(WeatherGetData(city: model[index].city));
-                            return const MyHomePage();
-                          }));
-                        },
-                        title: Text(model[index].city, style: style),
-                        subtitle: Text(
-                          "${model[index].temp}°C",
-                          style: style,
-                        ),
-                        trailing: Image.asset(model[index].image),
+                  return Card(
+                    color: AppPallete.cardColor,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(12),
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          BlocProvider.of<WeatherBloc>(context)
+                              .add(WeatherGetData(city: model[index].city));
+                          return const MyHomePage();
+                        }));
+                      },
+                      title: Text(model[index].city, style: style),
+                      subtitle: Text(
+                        "${model[index].temp}°C",
+                        style: style,
                       ),
+                      trailing: Image.asset(model[index].image),
                     ),
                   );
                 },

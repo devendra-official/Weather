@@ -17,7 +17,7 @@ class ManageDataResourceImpl implements ManageDataResource {
   @override
   Future<bool> addCity(String city, String temp, String image) async {
     try {
-      List<String>? cityList = preferences.getStringList("city");
+      List<String>? cityList = preferences.getStringList("cityList");
       cityList ??= [];
 
       List<ManageCityModel> conData = await getCities();
@@ -27,7 +27,7 @@ class ManageDataResourceImpl implements ManageDataResource {
         }
       }
       String data = jsonEncode({"city": city, "temp": temp, "image": image});
-      return await preferences.setStringList("city", [...cityList, data]);
+      return await preferences.setStringList("cityList", [...cityList, data]);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -36,13 +36,13 @@ class ManageDataResourceImpl implements ManageDataResource {
   @override
   Future<bool> deleteCity(String city) async {
     try {
-      List<String>? cityList = preferences.getStringList("city");
+      List<String>? cityList = preferences.getStringList("cityList");
       if (cityList != null) {
         cityList.removeWhere((item) {
           var decodedItem = jsonDecode(item);
           return decodedItem['city'] == city;
         });
-        await preferences.setStringList("city", cityList);
+        await preferences.setStringList("cityList", cityList);
         return true;
       }
       return false;
@@ -57,7 +57,7 @@ class ManageDataResourceImpl implements ManageDataResource {
     required String image,
   }) async {
     try {
-      List<String>? addedCity = preferences.getStringList("city");
+      List<String>? addedCity = preferences.getStringList("cityList");
       addedCity ??= addedCity = [];
 
       List<ManageCityModel> cityList = await getCities();
@@ -67,7 +67,7 @@ class ManageDataResourceImpl implements ManageDataResource {
               jsonEncode({"city": city, "temp": temp, "image": image});
         }
       }
-      return await preferences.setStringList("city", addedCity);
+      return await preferences.setStringList("cityList", addedCity);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -76,7 +76,7 @@ class ManageDataResourceImpl implements ManageDataResource {
   @override
   Future<List<ManageCityModel>> getCities() async {
     try {
-      List<String>? cityList = preferences.getStringList("city");
+      List<String>? cityList = preferences.getStringList("cityList");
       cityList ??= cityList = [];
       return cityList
           .map((city) => ManageCityModel.fromJson(jsonDecode(city)))

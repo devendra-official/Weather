@@ -3,7 +3,8 @@ class ManageCityModel {
   late String temp;
   late String image;
 
-  ManageCityModel({required this.city, required this.image, required this.temp});
+  ManageCityModel(
+      {required this.city, required this.image, required this.temp});
 
   ManageCityModel.fromJson(Map<String, dynamic> json) {
     city = json["city"];
@@ -11,8 +12,8 @@ class ManageCityModel {
     image = json["image"];
   }
 
-  Map<String,dynamic> toJson(){
-    Map<String,dynamic> data = {};
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = <String, dynamic>{};
     data["city"] = city;
     data["temp"] = temp;
     data["image"] = image;

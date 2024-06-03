@@ -37,8 +37,8 @@ class ManageCityCubit extends Cubit<ManageCityState> {
   void deleteCity(BuildContext context, String city) async {
     final result = await deleteCityUsecase.call(CityParam(city));
     result.fold((isDeleted) {
-      showMessage(context, "Removed sucessfully");
       getCity();
+      showMessage(context, "Removed sucessfully");
     }, (failure) {
       showMessage(context, failure.message);
     });
